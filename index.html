@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lazy load image</title>
+    <style type="text/css">
+        img {
+            width: 400px;
+            height: auto;
+            min-height: 300px;
+            display: block;
+            margin: 10px auto;
+            border: none;
+            background: #F1F1FA;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- normal image -->
+        <img src="https://kenh14cdn.com/thumb_w/660/2019/2/24/3561716420480213454575853861059020806684672n-15510057259571546306615.jpg">
+        <img src="https://thuthuatnhanh.com/wp-content/uploads/2019/11/tuyen-tap-girl-xinh-cap-3-580x580.jpg">
+        <img src="https://lh3.googleusercontent.com/proxy/hfrWveprKFfGlAImDnsEsK2CjVWYLnS6QmTcv6qLCWvjNAUs-sG8PottUFxocY0WGJJvspH4J5be-dYjOmQODepVLzp5AbXj9JqORxNdsk3upbV-WKARs-auGBWnpuh70vVSv66BLePsXqItRHUqdkZhqkFf">
+        <!-- lazy load image -->
+        <img class="lazy-image" data-src="https://i.ytimg.com/vi/1ZamTJyWbSY/maxresdefault.jpg">
+        <img class="lazy-image" data-src="https://meohayaz.com/wp-content/uploads/2020/03/Tr%E1%BB%8Dn-b%E1%BB%99-nh%E1%BB%AFng-h%C3%ACnh-%E1%BA%A3nh-%C4%91%E1%BA%B9p-girl-xinh-cho-%C4%91i%E1%BB%87n-tho%E1%BA%A1i.jpg">
+        <img class="lazy-image" data-src="https://i0.wp.com/danongonline.com.vn/wp-content/uploads/2018/02/girl-xinh-9x-trung-quoc-6.jpg?resize=624%2C826&ssl=1">
+        <img class="lazy-image" data-src="https://zicxaphotos.com/wp-content/uploads/2019/07/Girl-xinh-cute.jpg">
+        <img class="lazy-image" data-src="https://icdn.dantri.com.vn/k:72b62a2872/2016/08/02/girl-xinh-trung-quoc-1872389-12-1470148119459/cauchuyennoikhocuagaixinhgaytranhcaitrenmang.jpg">
+        <img class="lazy-image" data-src="https://honghot.net/wp-content/uploads/www_HongHot_net-Hinh-nen-girl-xinh-dien-thoai.jpg">
+        <img class="lazy-image" data-src="https://gamek.mediacdn.vn/k:2016/2-1461231508238/happy-polla-lai-sang-viet-nam-lam-dai-su-game.jpg">
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            // get all image lazy
+            var lazyImages = document.querySelectorAll("img.lazy-image");
+            var lazyLoadTimeout;
+
+            function lazyLoad() {
+                if(lazyLoadTimeout) {
+                    clearTimeout(lazyLoadTimeout);
+                }
+
+                lazyLoadTimeout = setTimeout(function() {
+
+                    var scrollTop = window.pageYOffset;
+                    var windowHeight = window.innerHeight;
+
+                    lazyImages.forEach(function(image) {
+                        if(image.offsetTop < (scrollTop + windowHeight)) {
+                            image.src = image.dataset.src;
+                            image.classList.remove("lazy-image");
+                        }
+                    });
+                    
+                    if(lazyImages.length === 0) {
+                        document.removeEventListener("scroll", lazyLoad);
+                        document.removeEventListener("resize", lazyLoad);
+                        document.removeEventListener("orientationChange", lazyLoad);
+                    }  
+                }, 20);
+            }
+
+            document.addEventListener("scroll", lazyLoad);
+            document.addEventListener("resize", lazyLoad);
+            document.addEventListener("orientationChange", lazyLoad);
+        });
+    </script>
+</body>
+</html>
